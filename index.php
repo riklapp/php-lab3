@@ -1,92 +1,31 @@
 <?php
-spl_autoload_register(function ($className) {
-    $baseDir = __DIR__ . '/src/';
-    $file = $baseDir . str_replace('\\', '/', $className) . '.php';
-    
-    if (file_exists($file)) {
-        require $file;
-    }
-});
+require 'vendor/autoload.php';
+use App\Point;
+use App\Vector;
 
-echo "=== Лабораторная работа №3 по PHP ===\n\n";
-spl_autoload_register(function ($class) {
-    $prefix = 'App\\';
-    $base_dir = __DIR__ . '/src/';
-    
-    $len = strlen($prefix);
-    if (strncmp($prefix, $class, $len) !== 0) {
-        return;
-    }
-    
-    $relative_class = substr($class, $len);
-    $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
-    
-    if (file_exists($file)) {
-        require $file;
-    }
-});
+// Создаем объекты
+$T1 = new Point(3, 4);
+$V1 = new Vector(3, 4);
+$V2 = new Vector(0, 0);
+$V3 = $V1->getPerpendicular();
 
-echo "=== Демонстрация магических методов ===\n\n";
+echo "Точка T1: {$T1}<br>";
+echo "Вектор V1: {$V1}<br>";
+echo "Вектор V2: {$V2}<br>";
+echo "Вектор V3: {$V3}<br><br>";
 
-// 1. __construct
-echo "1. Создание объекта:\n";
-$obj = new App\MagicClass();
-echo "\n";
+echo "Длины векторов:<br>";
+echo "V1: " . number_format($V1->length(), 2) . "<br>";
+echo "V2: " . number_format($V2->length(), 2) . "<br>";
+echo "V3: " . number_format($V3->length(), 2) . "<br><br>";
 
-// 2. __set
-echo "2. Установка свойства:\n";
-$obj->magicProperty = 'test value';
-echo "\n";
+echo "Перпендикулярность V1 и V3: " . 
+    ($V1->isPerpendicularTo($V3) ? "ДА" : "НЕТ") . "<br><br>";
 
-// 3. __get
-echo "3. Получение свойства:\n";
-$value = $obj->magicProperty;
-echo "\n";
+echo "Перенос точки T1 на вектор V1:<br>";
+echo "Было: {$T1}<br>";
+$T1->move($V1->getX(), $V1->getY());
+echo "Стало: {$T1}<br>";
 
-// 4. __isset
-echo "4. Проверка свойства:\n";
-$exists = isset($obj->magicProperty);
-echo "\n";
 
-// 5. __unset
-echo "5. Удаление свойства:\n";
-unset($obj->magicProperty);
-echo "\n";
 
-// 6. __call
-echo "6. Вызов несуществующего метода:\n";
-$obj->magicMethod('param1', 'param2');
-echo "\n";
-
-// 7. __callStatic
-echo "7. Вызов несуществующего статического метода:\n";
-App\MagicClass::staticMagicMethod('static param');
-echo "\n";
-
-// 8. __toString
-echo "8. Преобразование в строку:\n";
-echo $obj . "\n";
-echo "\n";
-
-// 9. __invoke
-echo "9. Вызов объекта как функции:\n";
-$obj('invoke parameter');
-echo "\n";
-
-// 10. __clone
-echo "10. Клонирование объекта:\n";
-$clone = clone $obj;
-echo "\n";
-
-// 11. __debugInfo
-echo "11. Отладочная информация:\n";
-var_dump($obj);
-echo "\n";
-
-// 12. __sleep и __wakeup (сериализация)
-echo "12. Сериализация:\n";
-$serialized = serialize($obj);
-$unserialized = unserialize($serialized);
-echo "\n";
-
-echo "=== Конец демонстрации ===\n";
