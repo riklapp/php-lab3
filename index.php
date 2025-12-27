@@ -1,5 +1,14 @@
 <?php
+spl_autoload_register(function ($className) {
+    $baseDir = __DIR__ . '/src/';
+    $file = $baseDir . str_replace('\\', '/', $className) . '.php';
+    
+    if (file_exists($file)) {
+        require $file;
+    }
+});
 
+echo "=== Лабораторная работа №3 по PHP ===\n\n";
 require 'vendor/autoload.php';
 
 echo "=== Демонстрация магических методов ===\n\n";
